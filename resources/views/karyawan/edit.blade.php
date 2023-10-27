@@ -80,9 +80,28 @@
         <option value="">Departement</option>
         @foreach ($departemen as $d)
             <option {{ $karyawan->kode_dept == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">
-                {{ $d->nama_dept }}</option>
+                {{ $d->kode_dept }}</option>
         @endforeach
     </select>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">  
+            <select name="kode_cabang" id="kode_cabang" class="form-select">
+                <option value="">Cabang</option>
+                @foreach ($cabang as $d)
+                <option {{ $karyawan->kode_cabang == $d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ strtoupper($d->nama_cabang) }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">  
+            <select name="waktu_kerja" id="waktu_kerja" class="form-select">
+                <option value="">Waktu Kerja</option>
+                <option {{ $karyawan->waktu_kerja == "PERSONAL" ? 'selected' : '' }} value="PERSONAL">{{ strtoupper("PERSONAL") }}</option>
+                <option {{ $karyawan->waktu_kerja == "DEPARTEMEN" ? 'selected' : '' }} value="DEPARTEMEN">{{ strtoupper("DEPARTEMEN") }}</option>
+            </select>
         </div>
     </div>
     <div class="row mt-2">

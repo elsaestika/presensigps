@@ -1,20 +1,40 @@
 @extends('layouts.presensi')
 @section('content')
+
+<style>
+    .logout{
+        position: absolute;
+        color: white;
+        font-size: 30px;
+        text-decoration: none;
+        right: 10px;
+        padding-top: 20px;
+    }
+
+    .logout:hover {
+        color: white;
+    }
+</style>
 <div class="section" id="user-section">
+    <a href="/proseslogout" class="logout">
+        <ion-icon name="log-out-outline"></ion-icon>
+    </a>
     <div id="user-detail">
         <div class="avatar">
-            @if (!empty(Auth::guard('karyawan')->user()->foto))   
+            @if (!empty(Auth::guard('karyawan')->user()->foto))
             @php
                 $path = Storage::url('uploads/karyawan/'.Auth::guard('karyawan')->user()->foto);
             @endphp
             <img src="{{ url($path) }}" alt="avatar" class="imaged w64 rounded">
             @else
-            <img src="assets/img/sample/avatar/eca.jpg" alt="avatar" class="imaged w64 rounded">
+            <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
             @endif
         </div>
         <div id="user-info">
-            <h2 id="user-name">{{ Auth::guard('karyawan')->user()->nama_lengkap }}</h2>
+            <h3 id="user-name">{{ Auth::guard('karyawan')->user()->nama_lengkap }}</h3>
             <span id="user-role">{{ Auth::guard('karyawan')->user()->jabatan }}</span>
+            <span id="user-role">({{ Auth::guard('karyawan')->user()->kode_cabang }})</span>
+            <h6 id="user-name" class="mt-2">{{ Auth::guard('karyawan')->user()->waktu_kerja }}</h6>
         </div>
     </div>
 </div>
@@ -25,7 +45,7 @@
             <div class="list-menu">
                 <div class="item-menu text-center">
                     <div class="menu-icon">
-                        <a href="" class="green" style="font-size: 40px;">
+                        <a href="/editprofile" class="green" style="font-size: 40px;">
                             <ion-icon name="person-sharp"></ion-icon>
                         </a>
                     </div>
@@ -45,7 +65,7 @@
                 </div>
                 <div class="item-menu text-center">
                     <div class="menu-icon">
-                        <a href="" class="warning" style="font-size: 40px;">
+                        <a href="/presensi/history" class="warning" style="font-size: 40px;">
                             <ion-icon name="document-text"></ion-icon>
                         </a>
                     </div>
@@ -70,56 +90,59 @@
 <div class="section mt-2" id="presence-section">
     <div class="todaypresence">
         <div class="row">
-
             <div class="col-6">
-                <div class="card gradasigreen">
-                    <div class="card-body">
-                        <div class="presencecontent">
-                            <div class="iconpresence">
-                                @if ($presensihariini !=null)
-                                @php
-                                    $path = Storage::url('uploads/absensi/'.$presensihariini->foto_in);
-                                @endphp                                 
-                                <img src="{{ url($path) }}" alt="" class="imaged w48">
-                                @else
-                                <ion-icon name="camera"></ion-icon>
-                                @endif
-                            </div>
-                            <div class="presencedetail">
-                                <h4 class="presencetitle">Masuk</h4>
-                                <span>{{ $presensihariini != null ? $presensihariini->jam_in : 'Belum Absen' }}</span>
+                <a href="/presensi/create">
+                    <div class="card gradasigreen">
+                        <div class="card-body">
+                            <div class="presencecontent">
+                                <div class="iconpresence">
+                                    @if ($presensihariini !=null)
+                                    @php
+                                        $path = Storage::url('uploads/absensi/'.$presensihariini->foto_in);
+                                    @endphp
+                                    <img src="{{ url($path) }}" alt="" class="imaged w48">
+                                    @else
+                                    <ion-icon name="camera"></ion-icon>
+                                    @endif
+                                </div>
+                                <div class="presencedetail">
+                                    <h4 class="presencetitle">Masuk</h4>
+                                    <span>{{ $presensihariini != null ? $presensihariini->jam_in : 'Belum Absen' }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-6">
-                <div class="card gradasired">
-                    <div class="card-body">
-                        <div class="presencecontent">
-                            <div class="iconpresence">
-                                @if ($presensihariini != null && $presensihariini->jam_out != null )
-                                @php
-                                $path = Storage::url('uploads/absensi/'.$presensihariini->foto_out);
-                                @endphp                                 
-                                <img src="{{ url($path) }}" alt="" class="imaged w48">
-                                @else
-                                <ion-icon name="camera"></ion-icon>
-                                @endif
-                            </div>
-                            <div class="presencedetail">
-                                <h4 class="presencetitle">Pulang</h4>
-                                <span>{{ $presensihariini != null && $presensihariini->jam_out != null ? $presensihariini->jam_out: 'Belum Absen' }}</span>
+                <a href="/presensi/create">
+                    <div class="card gradasired">
+                        <div class="card-body">
+                            <div class="presencecontent">
+                                <div class="iconpresence">
+                                    @if ($presensihariini != null && $presensihariini->jam_out != null )
+                                    @php
+                                    $path = Storage::url('uploads/absensi/'.$presensihariini->foto_out);
+                                    @endphp
+                                    <img src="{{ url($path) }}" alt="" class="imaged w48">
+                                    @else
+                                    <ion-icon name="camera"></ion-icon>
+                                    @endif
+                                </div>
+                                <div class="presencedetail">
+                                    <h4 class="presencetitle">Pulang</h4>
+                                    <span>{{ $presensihariini != null && $presensihariini->jam_out != null ? $presensihariini->jam_out: 'Belum Absen' }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
 
     <div id="rekappresensi">
-        <h3>Rekap Presensi Bulan {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}</h3>
+        <h3>Absensi Bulan {{ $namabulan[$bulanini] }} {{ $tahunini }}</h3>
         <div class="row">
             <div class="col-3">
                 <div class="card">
@@ -185,8 +208,8 @@
         </div>
         <div class="tab-content mt-2" style="margin-bottom:100px;">
             <div class="tab-pane fade show active" id="home" role="tabpanel">
-                <ul class="listview image-listview">
-                    @foreach ($historibulanini as $d)  
+                <!--<ul class="listview image-listview">
+                    @foreach ($historibulanini as $d)
                     @php
                         $path = Storage::url('/uploads/absensi/'.$d->foto_in);
                     @endphp
@@ -203,7 +226,65 @@
                         </div>
                     </li>
                     @endforeach
-                </ul>
+                </ul>-->
+                <style>
+                    .historicontent{
+                        display: flex;
+
+                    }
+
+                    .datapresensi{
+                        margin-left: 10px;
+                        line-height: 3px;
+                    }
+                </style>
+                @foreach ($historibulanini as $d)
+                    <div class="card historicard mb-1">
+                        <div class="card-body">
+                            <div class="historicontent">
+                                {{-- <div class="historidetail"> --}}
+                                    <div class="iconpresensi">
+                                        {{-- <ion-icon name="finger-print-outline" style="font-size: 48px" class="text-success"></ion-icon>  --}}
+                                        <ion-icon name="id-card-outline" style="font-size: 50px" class="text-success mt-1"></ion-icon>
+                                    </div>
+                                    <div class="datapresensi">
+                                        <h3 style="line-height: 2px;">{{ $d->nama_jam_kerja }}</h3>
+                                        <h4>{{ date($d->tgl_presensi) }}</h4>
+                                        <span>
+                                            {!! $d->jam_in != null ? date("H:i", strtotime($d->jam_in)) : '<span class="text-danger">
+                                                Belum Absen</span>' !!}
+                                        </span>
+                                        <span>
+                                            {!! $d->jam_out != null ? "-". date("H:i", strtotime($d->jam_out)) : '<span class="text-danger">
+                                                - Belum Absen</span>' !!}
+                                        </span>
+                                        <div class="mt-2" id="keterangan">
+                                            @php
+                                            //Jam ketika dia absen
+                                                $jam_in = date("H:i", strtotime($d->jam_in));
+
+                                                //Jam Jadwal Masuk
+                                                $jam_masuk = date("H:i", strtotime($d->jam_masuk));
+
+                                                $jadwal_jam_masuk = $d->tgl_presensi." ".$jam_masuk;
+                                                $jam_presensi = $d->tgl_presensi." ".$jam_in;
+                                            @endphp
+                                            @if ($jam_in > $jam_masuk)
+                                                @php
+                                                    $jmlterlambat = hitungjamterlambat($jadwal_jam_masuk,$jam_presensi);
+                                                    $jmlterlambatdesimal = hitungjamterlambatdesimal($jadwal_jam_masuk,$jam_presensi);
+                                                @endphp
+                                                <span class="danger">Terlambat  {{ $jmlterlambat }} ({{ $jmlterlambatdesimal }} Jam)</span>
+                                                @else
+                                                <span style="color:green">Tepat Waktu</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                {{-- </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel">
                 <ul class="listview image-listview">
@@ -221,10 +302,10 @@
                                 </span>
                             </div>
                         </div>
-                    </li> 
+                    </li>
                     @endforeach
-                    
-                    
+
+
                 </ul>
             </div>
 

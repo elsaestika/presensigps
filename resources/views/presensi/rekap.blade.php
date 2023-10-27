@@ -1,4 +1,6 @@
 @extends('layouts.admin.tabler')
+@section('title', 'Rekap Presensi')
+
 @section('content')
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -50,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="row mt-2">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <button type="submit" name="cetak" class="btn btn-primary w-100">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-printer" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -63,7 +65,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <button type="submit" name="exportexcel" class="btn btn-success w-100">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -73,6 +75,22 @@
                                                 <path d="M12 4l0 12"></path>
                                              </svg>
                                              Export to Excel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <button type="submit" name="exportpdf" class="btn btn-danger w-100">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-type-pdf" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                                <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4"></path>
+                                                <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6"></path>
+                                                <path d="M17 18h2"></path>
+                                                <path d="M20 15h-3v6"></path>
+                                                <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z"></path>
+                                             </svg>
+                                             PDF
                                         </button>
                                     </div>
                                 </div>

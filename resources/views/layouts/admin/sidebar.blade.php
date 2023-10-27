@@ -1,11 +1,22 @@
-<aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+<aside class="navbar navbar-vertical navbar-expand-lg text-whi" data-bs-theme="dark">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <h1 class="navbar-brand navbar-brand-autodark">
         <a href=".">
-          <img src="{{ asset ('tabler/static/logo.svg') }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+          <div class="row">
+            {{-- <div class="col-md-4">
+              <span class="avatar" style="background-image: url({{ asset('assets/img/logoo.png') }})" width="110" height="32" class="navbar-brand-image" ></span>
+            </div> --}}
+            <div class="col-md-8 mt-2">
+                {{-- <span class="avatar" style="background-image: url({{ asset('assets/img/logoo.png') }})" width="1000" height="1000" class="navbar-brand-image" ></span> --}}
+                <img src="{{ asset('assets/img/login/presensilogo.png') }}" alt="" style="margin-left: 30%" width="100%" height="">
+                {{-- <p>E-Presensi</p> --}}
+            </div>
+          </div>
+          {{-- <span class="app-brand-text demo menu-text fw-bolder ms-2">E-presensi</span> --}}
+          {{-- <img src="{{ asset ('tabler/static/logo.svg') }}" width="110" height="32" alt="Tabler" class="navbar-brand-image"> --}}
         </a>
       </h1>
       <div class="navbar-nav flex-row d-lg-none">
@@ -121,7 +132,7 @@
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-            <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+            <span class="avatar avatar-sm" style="background-image: url({{ asset('assets/img/camera.jpg') }})"></span>
             <div class="d-none d-xl-block ps-2">
               <div>Paweł Kuna</div>
               <div class="mt-1 small text-secondary">UI Designer</div>
@@ -140,41 +151,57 @@
       <div class="collapse navbar-collapse" id="sidebar-menu">
         <ul class="navbar-nav pt-lg-3">
           <li class="nav-item">
-            <a class="nav-link" href="./" >
+            <a class="nav-link" href="/panel/dashboardadmin" >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
               </span>
               <span class="nav-link-title">
-                Home
+                Dashboard
               </span>
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+            <a class="nav-link dropdown-toggle {{ request()->is(['karyawan','departemen','cabang']) ? 'show' : '' }}"
+              href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+              aria-expanded="{{ request()->is(['karyawan','departemen']) ? 'true' : '' }}" >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" /><path d="M12 12l8 -4.5" /><path d="M12 12l0 9" /><path d="M12 12l-8 -4.5" /><path d="M16 5.25l-8 4.5" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+                <path d="M12 12l8 -4.5" />
+                <path d="M12 12l0 9" />
+                <path d="M12 12l-8 -4.5" />
+                <path d="M16 5.25l-8 4.5" />
+              </svg>
               </span>
               <span class="nav-link-title">
                 Data Master
               </span>
             </a>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu {{ request()->is(['karyawan','departemen','cabang', 'cuti']) ? 'show' : '' }}">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/karyawan">
+                  <a class="dropdown-item {{ request()->is(['karyawan']) ? 'active' : '' }}" href="/karyawan">
                      Karyawan
                   </a>
-                  <a class="dropdown-item" href="/departemen">
+                  <a class="dropdown-item {{ request()->is(['departemen']) ? 'active' : '' }}" href="/departemen">
                       Departemen
+                  </a>
+                  <a class="dropdown-item {{ request()->is(['cabang']) ? 'active' : '' }}" href="/cabang">
+                    Kantor cabang
+                  </a>
+                  <a class="dropdown-item {{ request()->is(['cuti']) ? 'active' : '' }}" href="/cuti">
+                    Cuti
                   </a>
                 </div>
               </div>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/presensi/monitoring" >
+            <a class="nav-link {{ request()->is('presensi/monitoring') ? 'active' : '' }}" href="/presensi/monitoring" >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-rate-monitor" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -191,26 +218,45 @@
               </span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/presensi/izinsakit" >
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle {{ request()->is('presensi/izinsakit') ? 'active' : '' }}" href="/presensi/izinsakit"
+              data-bs-toggle="dropdown" data-bs-auto-close="false" role="button"
+              aria-expanded="{{ request()->is(['karyawan','departemen']) ? 'true' : '' }}">
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-heart-rate-monitor" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M3 4m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z"></path>
-                  <path d="M7 20h10"></path>
-                  <path d="M9 16v4"></path>
-                  <path d="M15 16v4"></path>
-                  <path d="M7 10h2l2 3l2 -6l1 3h3"></path>
-                </svg>
+                  <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path>
+                  <path d="M16 3v4"></path>
+                  <path d="M8 3v4"></path>
+                  <path d="M4 11h16"></path>
+                  <path d="M11 15h1"></path>
+                  <path d="M12 15v3"></path>
+               </svg>
               </span>
               <span class="nav-link-title">
-                Data Izin / Sakit
+                Pengajuan
               </span>
             </a>
+            <div class="dropdown-menu {{ request()->is(['izin_absen','cuti','pengajuan_izin']) ? 'show' : '' }}">
+              <div class="dropdown-menu-columns">
+                <div class="dropdown-menu-column">
+                  <a class="dropdown-item {{ request()->is(['izin_absen']) ? 'active' : '' }}" href="/presensi/izinsakit">
+                     Izin Absen
+                  </a>
+                  {{-- <a class="dropdown-item {{ request()->is(['cuti']) ? 'active' : '' }}" href="/departemen">
+                     Cuti
+                  </a>
+                  <a class="dropdown-item {{ request()->is(['pengajuan_izin']) ? 'active' : '' }}" href="/sakit/index">
+                    Sakit
+                </a> --}}
+                </div>
+              </div>
+            </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+            <a class="nav-link dropdown-toggle {{ request()->is(['presensi/laporan','presensi/rekap']) ? 'show' : '' }}" href="#navbar-base"
+              data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="{{ request()->is(['presensi/laporan','presensi/rekap']) ? 'true' : '' }}" >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-description" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -225,13 +271,13 @@
                 Laporan
               </span>
             </a>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu {{ request()->is(['presensi/laporan','presensi/rekap']) ? 'show' : '' }}">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/presensi/laporan">
+                  <a class="dropdown-item {{ request()->is(['presensi/laporan']) ? 'active' : '' }}" href="/presensi/laporan">
                       Presensi
                   </a>
-                  <a class="dropdown-item" href="/presensi/rekap">
+                  <a class="dropdown-item {{ request()->is(['presensi/rekap']) ? 'active' : '' }}" href="/presensi/rekap">
                       Rekap Presensi
                   </a>
                 </div>
@@ -239,7 +285,9 @@
             </div>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+            <a class="nav-link dropdown-toggle {{ request()->is(['konfigurasi','konfigurasi/*']) ? 'show' : '' }}"
+              href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
+              aria-expanded="{{ request()->is(['konfigurasi','konfigurasi/*']) ? 'true' : '' }}" >
               <span class="nav-link-icon d-md-none d-lg-inline-block">
                 <!-- Download SVG icon from http://tabler-icons.io/i/package -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings-filled" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -251,11 +299,16 @@
                 Konfigurasi
               </span>
             </a>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu {{ request()->is(['konfigurasi','konfigurasi/*']) ? 'show' : '' }}">
               <div class="dropdown-menu-columns">
                 <div class="dropdown-menu-column">
-                  <a class="dropdown-item" href="/konfigurasi/lokasikantor">
-                      Lokasi kantor
+                  <a class="dropdown-item {{ request()->is(['konfigurasi','konfigurasi/jamkerja']) ? 'active' : '' }}"
+                    href="/konfigurasi/jamkerja">
+                      Jam kerja
+                  </a>
+                  <a class="dropdown-item {{ request()->is(['konfigurasi','konfigurasi/jamkerjadept']) ? 'active' : '' }}"
+                    href="/konfigurasi/jamkerjadept">
+                      Jam kerja Departemen
                   </a>
                 </div>
               </div>
@@ -268,4 +321,3 @@
 
 
 
-  

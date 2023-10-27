@@ -1,4 +1,5 @@
 @extends('layouts.admin.tabler')
+@section('title', 'Monitoring')
 @section('content')
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -42,19 +43,20 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <table class="table table-striped table-hover">
+                                <table class="table table-striped table-hover table-bordered" id="dataTable">
                                     <thead>
-                                        <tr>
+                                        <tr class="text-center">
                                             <th>No</th>
                                             <th>Nik</th>
                                             <th>Nama Karyawan</th>
-                                            <th>Departemen</th>
+                                            <th>Dept</th>
+                                            <th>Jadwal</th>
                                             <th>Jam Masuk</th>
                                             <th>Foto</th>
                                             <th>Jam Pulang</th>
                                             <th>Foto</th>
-                                            <th>Keterangan</th>
-                                            <th></th>
+                                            <th>Ket</th>
+                                            <th>Lok</th>
                                         </tr>
                                     </thead>
                                     <tbody id="loadpresensi"></tbody>

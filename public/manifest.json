@@ -1,0 +1,17 @@
+{
+    "name" : "E-Presensi",
+    "short_name" : "E-Presensi",
+    "start_url" : "/",
+    "display" : "standalone",
+    "background_color" : "#1658B2",
+    "theme_color" : "#1658B2",
+    "orientation" : "potrait-primary",
+    "icons" : [
+        {
+            "src" : "logoo.png",
+            "sizes" : "512x512",
+            "type" : "image/png",
+            "purpose" : "any maskable"
+        }
+    ]
+}

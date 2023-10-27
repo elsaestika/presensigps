@@ -9,4 +9,5 @@ class Pengajuanizin extends Model
 {
     use HasFactory;
     protected $table = 'pengajuan_izin' ;
+    // protected $primaryKey = 'kode_izin';
 }

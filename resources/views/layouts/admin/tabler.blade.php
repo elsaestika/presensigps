@@ -13,7 +13,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Dashboard - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <title>@yield('title','Dashboard') </title>
     <script defer data-api="/stats/api/event" data-domain="preview.tabler.io" src="/stats/js/script.js"></script>
     <meta name="msapplication-TileColor" content="#0054a6"/>
     <meta name="theme-color" content="#0054a6"/>
@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
- 
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}">
 
     <style>
       @import url('https://rsms.me/inter/inter.css');
@@ -73,23 +73,29 @@
         @include('layouts.admin.footer')
       </div>
     </div>
-    
+
     <!-- Libs JS -->
     <script src="{{ asset ('tabler/dist/libs/apexcharts/dist/apexcharts.min.js?1691487027') }}" defer></script>
     <script src="{{ asset ('tabler/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1691487027') }}" defer></script>
     <script src="{{ asset ('tabler/dist/libs/jsvectormap/dist/maps/world.js?1691487027') }}" defer></script>
     <script src="{{ asset ('tabler/dist/libs/jsvectormap/dist/maps/world-merc.js?1691487027') }}" defer></script>
+
     <!-- Tabler Core -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
     <script src="{{ asset ('tabler/dist/js/tabler.min.js?1691487027') }}" defer></script>
     <script src="{{ asset ('tabler/dist/js/demo.min.js?1691487027') }}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('assets/js/lib/sweetalert.js') }}"></script>
+    <script src="{{ asset('assets/js/lib/jquery.mask.min.js') }}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+    <script src="{{ asset('assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/js/demo/datatables-demo.js') }}"></script>
     @stack('myscript')
-    
+
   </body>
 </html>

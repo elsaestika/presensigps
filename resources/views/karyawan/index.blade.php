@@ -1,4 +1,5 @@
 @extends('layouts.admin.tabler')
+@section('title', 'Karyawan')
 @section('content')
 <div class="page-header d-print-none">
     <div class="container-xl">
@@ -42,20 +43,21 @@
                                         <path d="M12 5l0 14"></path>
                                         <path d="M5 12l14 0"></path>
                                      </svg>
-                                    Tambah Data </a>
+                                    Tambah Data 
+                                </a>
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-12">
                                 <form action="/karyawan" method="GET">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-sm-12">
                                             <div class="form-group">
                                                 <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control" 
                                                 placeholder="Nama Karyawan" value="{{ Request('nama_lengkap') }}">
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-lg-4 col-sm-12">
                                             <div class="form-group">
                                                 <select name="kode_dept" id="kode_dept" class="form-select">
                                                     <option value="">Departement</option>
@@ -66,7 +68,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-lg-2 col-sm-12">
                                             <div class="form-group">
                                                 <button type="submit" class="btn btn-primary">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" 
@@ -83,74 +85,94 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                        <div class="row mt-2">
+                        </div> --}}
+                        <div class="row mt-4">
                             <div class="col-12">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>NIK</th>
-                                            <th>Nama</th>
-                                            <th>Jabatan</th>
-                                            <th>No Hp</th>
-                                            <th>Foto</th>
-                                            <th>Departement</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($karyawan as $d)
-                                        @php
-                                            $path = Storage::url('uploads/karyawan/' .$d->foto);
-                                        @endphp
-                                        <tr>
-                                            <td>{{ $loop->iteration + $karyawan->firstItem() -1}}</td>
-                                            <td>{{ $d->nik }}</td>
-                                            <td>{{ $d->nama_lengkap }}</td>
-                                            <td>{{ $d->jabatan }}</td>
-                                            <td>{{ $d->no_hp }}</td>
-                                            <td>
-                                                @if (empty($d->foto))
-                                                <img src="{{ asset('assets/img/nophoto.png') }}" class="avatar" alt="">
-                                                @else
-                                                <img src="{{ url($path) }}" class="avatar" alt="">
-                                                @endif
-                                                
-                                            </td>
-                                            <td>{{ $d->nama_dept }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="#" class="edit btn btn-info btn-sm" nik={{ $d->nik }}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
-                                                            <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
-                                                            <path d="M16 5l3 3"></path>
-                                                         </svg>
-                                                    </a>
-                                                    <form action="/karyawan/{{ $d->nik }}/delete" method="POST" style="margin-left: 5px">
-                                                        @csrf
-                                                        <a class="btn btn-danger btn-sm delete-confirm">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>NIK</th>
+                                                <th>Nama</th>
+                                                <th>Jabatan</th>
+                                                <th>No Hp</th>
+                                                <th>Foto</th>
+                                                <th>Departement</th>
+                                                <th>Cabang</th>
+                                                <th>Waktu Kerja</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($karyawan as $d)
+                                            @php
+                                                $path = Storage::url('uploads/karyawan/' .$d->foto);
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $loop->iteration + $karyawan->firstItem() -1}}</td>
+                                                <td>{{ $d->nik }}</td>
+                                                <td>{{ $d->nama_lengkap }}</td>
+                                                <td>{{ $d->jabatan }}</td>
+                                                <td>{{ $d->no_hp }}</td>
+                                                <td>
+                                                    @if (empty($d->foto))
+                                                    <img src="{{ asset('assets/img/nophoto.png') }}" class="avatar" alt="">
+                                                    @else
+                                                    <img src="{{ url($path) }}" class="avatar" alt="">
+                                                    @endif
+                                                    
+                                                </td>
+                                                <td>{{ $d->nama_dept }}</td>
+                                                <td>{{ $d->kode_cabang }}</td>
+                                                <td>{{ $d->waktu_kerja }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="#" class="edit btn btn-info btn-sm" nik={{ $d->nik }}>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                <path d="M4 7l16 0"></path>
-                                                                <path d="M10 11l0 6"></path>
-                                                                <path d="M14 11l0 6"></path>
-                                                                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
-                                                                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
+                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
+                                                                <path d="M16 5l3 3"></path>
+                                                            </svg>
+                                                        </a>
+                                                        <a href="/konfigurasi/{{ $d->nik }}/setjamkerja" class=" btn btn-success btn-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                                                                <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                                            </svg>
+                                                        </a>
+                                                        <a href="/karyawan/{{ $d->nik }}/resetpassword" class="btn btn-warning btn-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"></path>
+                                                                <path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"></path>
                                                              </svg>
                                                         </a>
-                                                    </form>
-                                                </div>
+                                                        <form action="/karyawan/{{ $d->nik }}/delete" method="POST" style="margin-left: 5px">
+                                                            @csrf
+                                                            <a class="btn btn-danger btn-sm delete-confirm">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                    <path d="M4 7l16 0"></path>
+                                                                    <path d="M10 11l0 6"></path>
+                                                                    <path d="M14 11l0 6"></path>
+                                                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                                                </svg>
+                                                            </a>
+                                                        </form>
+                                                    </div>
+                                                    
+                                                </td>
+                                            </tr>
                                                 
-                                            </td>
-                                        </tr>
-                                            
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $karyawan->links('vendor.pagination.bootstrap-4') }}
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {{-- {{ $karyawan->links('vendor.pagination.bootstrap-4') }} --}}
                                     </div>
                             </div>
                         </div>
@@ -186,7 +208,7 @@
                                 <path d="M19 11l0 2"></path>
                              </svg>
                             </span>
-                            <input type="text" value="" id="nik" class="form-control" name="nik" placeholder="Nik">
+                            <input type="text" maxlength="5" value="" id="nik" class="form-control" name="nik" placeholder="Nik">
                         </div>
                     </div>
                 </div>
@@ -237,20 +259,41 @@
                           </div>
                     </div>
                 </div>
-                <div class="row mt-2">
+                <div class="row">
                     <div class="col-12">
                         <input type="file" name="foto" class="form-control">    
                     </div>
                 </div>
-                <div class="row mt-2">
+                <div class="row mt-3">
                     <div class="col-12">  
-                <select name="kode_dept" id="kode_dept" class="form-select">
-                    <option value="">Departement</option>
-                    @foreach ($departemen as $d)
-                        <option {{ Request('kode_dept')==$d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">
-                            {{ $d->nama_dept }}</option>
-                    @endforeach
-                </select>
+                        <select name="kode_dept" id="kode_dept" class="form-select">
+                            <option value="">Departement</option>
+                            @foreach ($departemen as $d)
+                            <option value="{{ $d->kode_dept }}">{{ $d->kode_dept }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">  
+                        <select name="kode_cabang" id="kode_cabang" class="form-select">
+                            <option value="">Cabang</option>
+                            @foreach ($cabang as $d)
+                            <option value="{{ $d->kode_cabang }}">{{ strtoupper($d->nama_cabang) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">  
+                        <select name="waktu_kerja" id="waktu_kerja" class="form-select">
+                            <option value="">Waktu Kerja</option>
+                            {{-- @foreach ($karyawan as $d)     --}}
+                            <option value="PERSONAL">PERSONAL</option>
+                            <option value="DEPARTEMEN">DEPARTEMEN</option>
+                            {{-- <option value="{{ $d->waktu_kerja }}">{{ strtoupper($d->waktu_kerja) }}</option> --}}
+                            {{-- @endforeach --}}
+                        </select>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -292,6 +335,9 @@
 @push('myscript')
     <script>
         $(function(){
+
+            $("#nik").mask("0000000000000000");
+            $("#no_hp").mask("0000000000000");
             $("#btnTambahkaryawan").click(function() {
                 $("#modal-inputkaryawan").modal("show");
             });
@@ -343,6 +389,7 @@
                 var jabatan = $("#jabatan").val();
                 var no_hp = $("#no_hp").val();
                 var kode_dept = $("frmKaryawan").find("#kode_dept").val();
+                var waktu_kerja = $("#waktu_kerja").find("#waktu_kerja").val();
                 if ( nik ==""){
                     // alert('nik harus diisi')
                     Swal.fire({

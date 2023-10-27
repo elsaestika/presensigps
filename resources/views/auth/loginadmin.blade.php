@@ -13,7 +13,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Sign in with illustration - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <title>Login</title>
     <script defer data-api="/stats/api/event" data-domain="preview.tabler.io" src="/stats/js/script.js"></script>
     <meta name="msapplication-TileColor" content=""/>
     <meta name="theme-color" content=""/>
@@ -72,7 +72,7 @@
                   <div class="alert alert-warning">
                     <p>{{ Session::get('warning') }}</p>
                   </div>
-                      
+
                   @endif
                   <form action="/prosesloginadmin" method="post" autocomplete="off" novalidate>
                     @csrf
@@ -84,7 +84,7 @@
                       <label class="form-label">
                         Password
                         <span class="form-label-description">
-                          <a href="./forgot-password.html">I forgot password</a>
+                          {{-- <a href="./forgot-password.html">I forgot password</a> --}}
                         </span>
                       </label>
                       <div class="input-group input-group-flat">
@@ -99,21 +99,21 @@
                     <div class="mb-2">
                       <label class="form-check">
                         <input type="checkbox" class="form-check-input"/>
-                        <span class="form-check-label">Remember me on this device</span>
+                        <span class="form-check-label">Remember me</span>
                       </label>
                     </div>
                     <div class="form-footer">
-                      <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                      <button type="submit" class="btn btn-primary w-100">Login</button>
                     </div>
                   </form>
                 </div>
 
               </div>
-    
+
             </div>
           </div>
-          <div class="col-lg d-none d-lg-block">
-            <img src="{{ asset('tabler/static/illustrations/undraw_secure_login_pdn4.svg') }}" height="300" class="d-block mx-auto" alt="">
+          <div class="col-lg d-none d-lg-block pt-7">
+            <img src="{{ asset('assets/img/login/presensilogo.png') }}" height="450" class="d-block mx-auto" alt="">
           </div>
         </div>
       </div>

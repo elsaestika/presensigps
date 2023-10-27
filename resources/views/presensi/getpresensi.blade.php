@@ -19,16 +19,28 @@
     $foto_in = Storage::url('uploads/absensi/'.$d->foto_in);
     $foto_out = Storage::url('uploads/absensi/'.$d->foto_out);
 @endphp
-<tr>
+<tr class="text-center">
     <td>{{ $loop->iteration }}</td>
     <td>{{ $d->nik }}</td>
     <td>{{ $d->nama_lengkap }}</td>
-    <td>{{ $d->nama_dept }}</td>
-    <td>{{ $d->jam_in }}</td>
+    <td>{{ $d->kode_dept }}</td>
+    <td>{{ $d->nama_jam_kerja }} ({{ $d->jam_masuk }} s/d {{ $d->jam_pulang }})</td>
+    <td>
+        {{ $d->jam_in }}
+        <br>
+        @if ($d->status_presensi_in == 1)
+        Onsite
+        @endif
+    </td>
     <td>
         <img src="{{ url($foto_in) }}" class="avatar" alt="">
     </td>
-    <td>{!! $d->jam_out != null ? $d->jam_out : '<span class="badge bg-danger">Belum Absen Pulang</span>' !!}</td>
+    <td>
+        {!! $d->jam_out != null ? $d->jam_out : '<span class="badge bg-danger">Belum Absen Pulang</span>' !!} <br>
+        @if ($d->status_presensi_out == 1)
+        Onsite
+        @endif
+    </td>
     <td>
         @if ($d->jam_out != null)
         <img src="{{ url($foto_out) }}" class="avatar" alt="">
@@ -44,9 +56,9 @@
         @endif
     </td>
     <td>
-        @if ($d->jam_in >= '08:30')
+        @if ($d->jam_in >= $d->jam_masuk )
         @php
-            $jamterlambat = selisih('08:30:00', $d->jam_in);
+            $jamterlambat = selisih($d->jam_masuk, $d->jam_in);
         @endphp
             <span class="badge bg-danger">terlambat {{ $jamterlambat }}</span>
         @else

@@ -6,10 +6,10 @@
   <title>A4</title>
 
   <!-- Normalize or reset CSS with your favorite library -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
 
   <!-- Load paper.css for happy printing -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css"> --}}
 
   <!-- Set page size here: A5, A4 or A3 -->
   <!-- Set also "landscape" if you need -->
@@ -132,14 +132,15 @@
                     }else{
                         $hadir = explode("-",$d->$tgl);
                         $totalhadir += 1;
-                        if($hadir[0] > "08:30:00"){
+                        if($hadir[0] > "08:30"){
                             $totalterlambat += 1;
                         }
                     }
                 ?>
-                <td>
-                   <span style="color:{{ $hadir[0]>"08:30:00" ? "red" : ""}}" >{{ $hadir[0] }}</span> 
-                   <span style="color:{{ $hadir[1]<"17:00:00" ? "red" : ""}}" >{{ $hadir[1] }}</span> 
+
+                <td class="text-center">
+                   <span>{{ !empty($hadir[0]) ? $hadir[0] : '-' }}</span> <br>
+                   <span>{{ !empty($hadir[1]) ? $hadir[1] : '-' }}</span> 
                 </td>
                 <?php
                     }

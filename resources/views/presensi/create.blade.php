@@ -1,4 +1,5 @@
 @extends('layouts.presensi')
+@section('title','Absensi')
 @section('header')
 <!-- App Header -->
 <div class="appHeader bg-primary text-light">
@@ -26,29 +27,89 @@
         height: 200px; 
         }
 
+    .jam-digital-malasngoding {
+
+        background-color: #27272783;
+        position: absolute;
+        top: 65px;
+        right: 15px;
+        z-index: 9999;
+        width: 150px;
+        border-radius: 10px;
+        padding: 5px;
+    }
+ 
+ 
+ 
+    .jam-digital-malasngoding p {
+        color: #fff;
+        font-size: 16px;
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 @endsection
 @section('content')
-<div class="row" style="margin-top: 70px">
+<div class="row" style="margin-top: 60px">
     <div class="col">
         <input type="hidden" id="lokasi">
         <div class="webcam-capture"></div>
     </div>
 </div>
+<div class="jam-digital-malasngoding">
+    <p>{{ date("d-m-Y") }}</p>
+    <p id="jam"></p>
+    <p>{{ $jamkerja->nama_jam_kerja }}</p>
+    <p>Mulai : {{ date("H:i", strtotime($jamkerja->awal_jam_masuk)) }}</p>
+    <p>Masuk : {{ date("H:i", strtotime($jamkerja->jam_masuk)) }}</p>
+    <p>Akhir : {{ date("H:i", strtotime($jamkerja->akhir_jam_masuk)) }}</p>
+    <p>Pulang : {{ date("H:i", strtotime($jamkerja->jam_pulang)) }}</p>
+</div>
 <div class="row">
     <div class="col">
-        @if ($cek > 0)
-        <button id="takeabsen" class="btn btn-danger btn-block">
-            <ion-icon name="camera-outline"></ion-icon>
-            Absen Pulang
-        </button>      
+        @if ($cek != null)
+        @if ($cek->jam_out != null)
+        <div class="alert alert-warning">
+            <p>Anda Sudah Melakukan Presensi Hari ini, Terimakasih</p>
+        </div>
+        @else   
+        <div class="row">
+            <div class="col-6">
+                <button  status_presensi="" class="btn btn-danger btn-block takeabsen">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Pulang
+                </button>
+            </div>   
+
+            <div class="col-6">
+                <button  status_presensi="onsite" class="btn btn-danger btn-block takeabsen">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    On site
+                </button> 
+            </div>   
+        </div>   
+        @endif
+           
         @else
-        <button id="takeabsen" class="btn btn-primary btn-block">
-            <ion-icon name="camera-outline"></ion-icon>
-            Absen Masuk
-        </button>   
+        <div class="row">
+            <div class="col-6">
+                <button  status_presensi="" class="btn btn-primary btn-block takeabsen">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    Absen Masuk
+                </button>
+            </div>   
+
+            <div class="col-6">
+                <button  status_presensi="onsite" class="btn btn-primary btn-block takeabsen">
+                    <ion-icon name="camera-outline"></ion-icon>
+                    On site
+                </button> 
+            </div>   
+        </div>
         @endif 
     </div>  
 </div>
@@ -70,6 +131,30 @@
 @endsection
 
 @push('myscript')
+<script type="text/javascript">
+    window.onload = function() {
+        jam();
+    }
+ 
+    function jam() {
+        var e = document.getElementById('jam')
+            , d = new Date()
+            , h, m, s;
+        h = d.getHours();
+        m = set(d.getMinutes());
+        s = set(d.getSeconds());
+ 
+        e.innerHTML = h + ':' + m + ':' + s;
+ 
+        setTimeout('jam()', 1000);
+    }
+ 
+    function set(e) {
+        e = e < 10 ? '0' + e : e;
+        return e;
+    }
+ 
+</script>   
     <script>
 
         var notifikasi_in = document.getElementById('notifikasi_in');
@@ -80,6 +165,7 @@
             , widht: 640
             , image_format: 'jpeg'
             , jpeg_quality: 80
+            , flip_horiz: true
         });
 
         Webcam.attach('.webcam-capture');
@@ -92,14 +178,14 @@
         function successCallback(position){
             lokasi.value = position.coords.latitude+","+position.coords.longitude;
             var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 18);
-            var lokasi_kantor  = "{{ $lok_kantor->lokasi_kantor }}" ;
+            var lokasi_kantor  = "{{ $lok_kantor->lokasi_cabang }}" ;
             var lok = lokasi_kantor.split(",");
             var lat_kantor = lok[0];
             var long_kantor = lok[1];
-            var radius = "{{ $lok_kantor->radius }}";
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19
-                , attribution: '© OpenStreetMap'
+            var radius = "{{ $lok_kantor->radius_cabang }}";
+            L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+                maxZoom: 20,
+                subdomains:['mt0','mt1','mt2','mt3']
             }).addTo(map);
             var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
             var circle = L.circle([lat_kantor,long_kantor], {
@@ -114,11 +200,13 @@
 
         }
 
-        $("#takeabsen").click(function(e) {
+        $(".takeabsen").click(function(e) {
             Webcam.snap(function(uri) {
                 image = uri;
             });
             var lokasi = $("#lokasi").val();
+            var status_presensi = $(this).attr("status_presensi");
+
             $.ajax({
                 type:'POST'
                 , url:'/presensi/store'
@@ -126,6 +214,7 @@
                     _token:"{{ csrf_token() }}"
                     , image:image
                     , lokasi:lokasi
+                    , status_presensi:status_presensi
                 }
                 , cache: false
                 , success: function(respond) {

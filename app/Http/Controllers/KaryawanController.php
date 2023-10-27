@@ -26,10 +26,11 @@ class KaryawanController extends Controller
         if(!empty($request->kode_dept)){
             $query->where('karyawan.kode_dept',$request->kode_dept);
         }
-        $karyawan = $query->paginate(4);
+        $karyawan = $query->paginate();
 
         $departemen = DB::table('departemen')->get();
-        return view ('karyawan.index', compact('karyawan','departemen'));
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view ('karyawan.index', compact('karyawan','departemen','cabang'));
     }
 
     public function store(Request $request)
@@ -40,6 +41,8 @@ class KaryawanController extends Controller
         $no_hp = $request->no_hp;
         $kode_dept = $request->kode_dept;
         $password = Hash::make('12345');
+        $kode_cabang = $request->kode_cabang;
+        $waktu_kerja = $request->waktu_kerja;
         
         if($request->hasFile('foto')) {
             $foto = $nik.".".$request->file('foto')->getClientOriginalExtension();
@@ -55,7 +58,9 @@ class KaryawanController extends Controller
                 'no_hp' => $no_hp,
                 'kode_dept' => $kode_dept,
                 'foto' => $foto,
-                'password' => $password
+                'password' => $password,
+                'kode_cabang' => $kode_cabang,
+                'waktu_kerja' => $waktu_kerja
             ];
             $simpan = DB::table('karyawan')->insert($data);
             if ($simpan) {
@@ -66,8 +71,13 @@ class KaryawanController extends Controller
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']); 
             }
         } catch (\Exception $e) {
+            if ($e->getCode() == 23000 ) {
+                $message = " Data dengan Nik " .  $nik  . " Sudah Ada ";
+            }else{
+                $message = " Hubungi IT";
+            }
             // dd($e->message);
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']); 
+            return Redirect::back()->with(['warning' => ' Data Gagal Disimpan ' . $message]); 
         }
     }
 
@@ -75,8 +85,10 @@ class KaryawanController extends Controller
     {
         $nik = $request->nik;
         $departemen = DB::table('departemen')->get();
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         $karyawan = DB::table('karyawan')->where('nik',$nik)->first();
-        return view('karyawan.edit',compact('departemen','karyawan'));
+
+        return view('karyawan.edit',compact('departemen','karyawan', 'cabang'));
     }
 
     public function update($nik, Request $request)
@@ -89,6 +101,8 @@ class KaryawanController extends Controller
         $jabatan = $request->jabatan;
         $no_hp = $request->no_hp;
         $kode_dept = $request->kode_dept;
+        $kode_cabang = $request->kode_cabang;
+        $waktu_kerja = $request->waktu_kerja;
         $password = Hash::make('12345');
         
         if($request->hasFile('foto')) {
@@ -104,7 +118,9 @@ class KaryawanController extends Controller
                 'no_hp' => $no_hp,
                 'kode_dept' => $kode_dept,
                 'foto' => $foto,
-                'password' => $password
+                'password' => $password,
+                'kode_cabang' => $kode_cabang,
+                'waktu_kerja' => $waktu_kerja,
             ];
             $update = DB::table('karyawan')->where('nik', $nik)->update($data);
             if ($update) {
@@ -129,6 +145,17 @@ class KaryawanController extends Controller
             return Redirect::back()->with(['success'=>'Data Berhasil Dihapus']);
         }else{
             return Redirect::back()->with(['warning'=>'Data Gagal Dihapus']);
+        }
+    }
+
+    public function resetpassword($nik)
+    {
+        $password_default = Hash::make('12345');
+        try {
+            DB::table('karyawan')->where('nik', $nik)->update(['password' => $password_default]);
+            return Redirect::back()->with(['success' => 'Password Berhasil di Reset']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Password Gagal di Reset']);
         }
     }
 }
